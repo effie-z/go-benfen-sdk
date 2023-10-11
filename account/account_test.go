@@ -22,7 +22,7 @@ func Test_Signature_Marshal_Unmarshal(t *testing.T) {
 	account, err := NewAccountWithMnemonic(Mnemonic)
 	require.Nil(t, err)
 
-	msg := "Coming chat is very good jopfpzf"
+	msg := "Test_Signature_Marshal_Unmarshal"
 	msgBytes := []byte(msg)
 
 	signature1, err := account.SignSecureWithoutEncode(msgBytes, sui_types.DefaultIntent())
