@@ -4,9 +4,9 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 
-	"github.com/coming-chat/go-aptos/crypto/derivation"
-	"github.com/coming-chat/go-sui/v2/lib"
-	"github.com/coming-chat/go-sui/v2/sui_types"
+	"github.com/bf/go-benfen/crypto"
+	"github.com/bf/go-benfen/lib"
+	"github.com/bf/go-benfen/sui_types"
 	"github.com/tyler-smith/go-bip39"
 	"golang.org/x/crypto/blake2b"
 )
@@ -50,7 +50,7 @@ func NewAccountWithMnemonic(mnemonic string) (*Account, error) {
 	if err != nil {
 		return nil, err
 	}
-	key, err := derivation.DeriveForPath("m/44'/784'/0'/0'/0'", seed)
+	key, err := crypto.DeriveForPath("m/44'/784'/0'/0'/0'", seed)
 	if err != nil {
 		return nil, err
 	}

@@ -6,10 +6,10 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/coming-chat/go-sui/v2/sui_types"
+	"github.com/bf/go-benfen/sui_types"
 
-	"github.com/coming-chat/go-sui/v2/account"
-	"github.com/coming-chat/go-sui/v2/types"
+	"github.com/bf/go-benfen/account"
+	"github.com/bf/go-benfen/types"
 	"github.com/stretchr/testify/require"
 )
 
