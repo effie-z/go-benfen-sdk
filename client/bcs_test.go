@@ -4,10 +4,10 @@ import (
 	"context"
 	"testing"
 
-	"github.com/bf/go-benfen/lib"
-	"github.com/bf/go-benfen/sui_types"
-	"github.com/bf/go-benfen/sui_types/sui_system_state"
-	"github.com/bf/go-benfen/types"
+	"github.com/effie-z/go-benfen-sdk/lib"
+	"github.com/effie-z/go-benfen-sdk/sui_types"
+	"github.com/effie-z/go-benfen-sdk/sui_types/sui_system_state"
+	"github.com/effie-z/go-benfen-sdk/types"
 	"github.com/fardream/go-bcs/bcs"
 	"github.com/stretchr/testify/require"
 )

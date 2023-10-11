@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/bf/go-benfen/sui_types"
+	"github.com/effie-z/go-benfen-sdk/sui_types"
 )
 
 type ResourceType struct {

@@ -1,4 +1,4 @@
-module github.com/bf/go-benfen
+module github.com/effie-z/go-benfen-sdk
 
 go 1.19
 

@@ -4,9 +4,9 @@ import (
 	"context"
 	"strings"
 
-	"github.com/bf/go-benfen/lib"
-	"github.com/bf/go-benfen/sui_types"
-	"github.com/bf/go-benfen/types"
+	"github.com/effie-z/go-benfen-sdk/lib"
+	"github.com/effie-z/go-benfen-sdk/sui_types"
+	"github.com/effie-z/go-benfen-sdk/types"
 )
 
 // NOTE: This copys the query limit from our Rust JSON RPC backend, this needs to be kept in sync!

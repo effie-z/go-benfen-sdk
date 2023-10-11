@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/bf/go-benfen/sui_types"
+	"github.com/effie-z/go-benfen-sdk/sui_types"
 	"github.com/shopspring/decimal"
 )
 

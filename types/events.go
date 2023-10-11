@@ -1,6 +1,6 @@
 package types
 
-import "github.com/bf/go-benfen/sui_types"
+import "github.com/effie-z/go-benfen-sdk/sui_types"
 
 type EventId struct {
 	TxDigest sui_types.TransactionDigest `json:"txDigest"`

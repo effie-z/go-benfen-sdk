@@ -1,6 +1,6 @@
 package sui_types
 
-import "github.com/bf/go-benfen/lib"
+import "github.com/effie-z/go-benfen-sdk/lib"
 
 type IntentScope struct {
 	TransactionData         *lib.EmptyEnum // Used for a user signature on a transaction data.

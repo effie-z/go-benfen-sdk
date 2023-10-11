@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/bf/go-benfen/sui_types"
+	"github.com/effie-z/go-benfen-sdk/sui_types"
 	"github.com/stretchr/testify/require"
 )
 

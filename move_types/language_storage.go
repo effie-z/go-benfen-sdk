@@ -1,6 +1,6 @@
 package move_types
 
-import "github.com/bf/go-benfen/lib"
+import "github.com/effie-z/go-benfen-sdk/lib"
 
 type StructTag struct {
 	Address    AccountAddress

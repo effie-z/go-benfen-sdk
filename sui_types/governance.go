@@ -1,6 +1,6 @@
 package sui_types
 
-import "github.com/bf/go-benfen/move_types"
+import "github.com/effie-z/go-benfen-sdk/move_types"
 
 const (
 	StakingPoolModuleName = move_types.Identifier("staking_pool")

@@ -1,8 +1,8 @@
 package types
 
 import (
-	"github.com/bf/go-benfen/lib"
-	"github.com/bf/go-benfen/sui_types"
+	"github.com/effie-z/go-benfen-sdk/lib"
+	"github.com/effie-z/go-benfen-sdk/sui_types"
 )
 
 type ExecuteTransactionRequestType string

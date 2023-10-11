@@ -1,9 +1,9 @@
 package sui_types
 
 import (
-	"github.com/bf/go-benfen/lib"
-	"github.com/bf/go-benfen/move_types"
-	"github.com/bf/go-benfen/sui_protocol"
+	"github.com/effie-z/go-benfen-sdk/lib"
+	"github.com/effie-z/go-benfen-sdk/move_types"
+	"github.com/effie-z/go-benfen-sdk/sui_protocol"
 )
 
 type TransactionData struct {

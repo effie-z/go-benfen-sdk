@@ -3,8 +3,8 @@ package client
 import (
 	"context"
 
-	"github.com/bf/go-benfen/sui_types"
-	"github.com/bf/go-benfen/types"
+	"github.com/effie-z/go-benfen-sdk/sui_types"
+	"github.com/effie-z/go-benfen-sdk/types"
 )
 
 // MintNFT
