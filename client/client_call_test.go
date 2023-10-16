@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/effie-z/go-benfen-sdk/lib"
+	"github.com/effie-z/go-benfen-sdk/move_types"
 	"github.com/effie-z/go-benfen-sdk/sui_types"
 	"github.com/fardream/go-bcs/bcs"
 
@@ -757,15 +758,15 @@ func TestClient_DevInspectTransactionBlockV2(t *testing.T) {
 		VaultId          sui_types.SuiAddress `json:"vault_id"`
 		PositionNumber   uint32               `json:"position_number"`
 		State            uint8                `json:"state"`
-		StateCounter     uint8                `json:"state_counter"`
+		StateCounter     uint32               `json:"state_counter"`
 		MaxCounterTimes  uint32               `json:"max_counter_times"`
-		LastSqrtPrice    bcs.Uint128          `json:"last_sqrt_price"`
+		LastSqrtPrice    move_types.U128      `json:"last_sqrt_price"`
 		CoinABalance     uint64               `json:"coin_a_balance"`
 		CoinBBalance     uint64               `json:"coin_b_balance"`
 		TickSpacing      uint32               `json:"tick_spacing"`
 		SpacingTimes     uint32               `json:"spacing_times"`
-		Liquidity        bcs.Uint128          `json:"liquidity"`
-		CurrentSqrtPrice bcs.Uint128          `json:"current_sqrt_price"`
+		Liquidity        move_types.U128      `json:"liquidity"`
+		CurrentSqrtPrice move_types.U128      `json:"current_sqrt_price"`
 		CurrentTickIndex uint32               `json:"current_tick_index"`
 		IsPause          bool                 `json:"is_pause"`
 		Index            uint64               `json:"index"`
