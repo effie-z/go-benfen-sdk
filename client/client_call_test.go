@@ -1,6 +1,7 @@
 package client
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -9,6 +10,7 @@ import (
 
 	"github.com/effie-z/go-benfen-sdk/lib"
 	"github.com/effie-z/go-benfen-sdk/sui_types"
+	"github.com/fardream/go-bcs/bcs"
 
 	"github.com/effie-z/go-benfen-sdk/types"
 	"github.com/stretchr/testify/require"
@@ -714,4 +716,68 @@ func TestClient_GetDynamicFieldObject(t *testing.T) {
 			},
 		)
 	}
+}
+
+func TestClient_DevInspectTransactionBlockV2(t *testing.T) {
+	chain, err := Dial("http://127.0.0.1:9000")
+	require.NoError(t, err)
+
+	fromAddr, err := sui_types.NewAddressFromHex("0x0")
+	require.NoError(t, err)
+
+	resp, err := chain.DevInspectTransactionBlockV2(
+		context.Background(),
+		*fromAddr,
+		"0xc8::obc_system::vault_info",
+		[]string{
+			"0xc8::usd::USD",
+		},
+		[]*DevInspectArgs{
+			{
+				Type:    "object",
+				Value:   "0xc9",
+				Version: 1,
+			},
+		},
+	)
+	require.NoError(t, err)
+
+	// parse result
+	resBytes := []byte{}
+	values := resp.Results[0].ReturnValues[0]
+	interfaceData := values.([]interface{})[0]
+	switch interfaceData.(type) {
+	case []interface{}:
+		for _, item := range interfaceData.([]interface{}) {
+			resBytes = append(resBytes, uint8(item.(float64)))
+		}
+	}
+
+	var vaultInfo struct {
+		VaultId          sui_types.SuiAddress `json:"vault_id"`
+		PositionNumber   uint32               `json:"position_number"`
+		State            uint8                `json:"state"`
+		StateCounter     uint8                `json:"state_counter"`
+		MaxCounterTimes  uint32               `json:"max_counter_times"`
+		LastSqrtPrice    bcs.Uint128          `json:"last_sqrt_price"`
+		CoinABalance     uint64               `json:"coin_a_balance"`
+		CoinBBalance     uint64               `json:"coin_b_balance"`
+		TickSpacing      uint32               `json:"tick_spacing"`
+		SpacingTimes     uint32               `json:"spacing_times"`
+		Liquidity        bcs.Uint128          `json:"liquidity"`
+		CurrentSqrtPrice bcs.Uint128          `json:"current_sqrt_price"`
+		CurrentTickIndex uint32               `json:"current_tick_index"`
+		IsPause          bool                 `json:"is_pause"`
+		Index            uint64               `json:"index"`
+		BasePoint        uint64               `json:"base_point"`
+	}
+	bcs.Unmarshal(resBytes, &vaultInfo)
+	PrintJson(vaultInfo)
+}
+
+func PrintJson(data any) {
+	body, _ := json.Marshal(data)
+	var str bytes.Buffer
+	_ = json.Indent(&str, body, "", "    ")
+	fmt.Println(str.String())
 }

@@ -4,8 +4,9 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
-	"github.com/btcsuite/btcutil/base58"
 	"strings"
+
+	"github.com/btcsuite/btcutil/base58"
 )
 
 type BytesData interface {
@@ -92,6 +93,10 @@ func (h Base64Data) String() string {
 
 func (h Base64Data) MarshalJSON() ([]byte, error) {
 	return json.Marshal(h.String())
+}
+
+func (h Base64Data) MarshalBCS() ([]byte, error) {
+	return h, nil
 }
 
 func (h *Base64Data) UnmarshalJSON(data []byte) error {

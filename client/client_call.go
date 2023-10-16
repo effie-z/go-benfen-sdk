@@ -2,11 +2,14 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"github.com/effie-z/go-benfen-sdk/lib"
+	"github.com/effie-z/go-benfen-sdk/move_types"
 	"github.com/effie-z/go-benfen-sdk/sui_types"
 	"github.com/effie-z/go-benfen-sdk/types"
+	"github.com/fardream/go-bcs/bcs"
 )
 
 // NOTE: This copys the query limit from our Rust JSON RPC backend, this needs to be kept in sync!
@@ -16,6 +19,12 @@ type suiAddress = sui_types.SuiAddress
 type suiObjectID = sui_types.ObjectID
 type suiDigest = sui_types.TransactionDigest
 type suiBase64Data = lib.Base64Data
+
+type DevInspectArgs struct {
+	Type    string
+	Value   any
+	Version uint64
+}
 
 // MARK - Getter Function
 
@@ -401,4 +410,95 @@ func (c *Client) GetDynamicFieldObject(
 ) (*types.SuiObjectResponse, error) {
 	var resp types.SuiObjectResponse
 	return &resp, c.CallContext(ctx, &resp, getDynamicFieldObject, parentObjectId, name)
+}
+
+/*
+input target: 0xc8::obc_system::vault_info
+return: 0xc8, obc_system, vault_info
+*/
+func (c *Client) GetFunctions(target string) (*suiAddress, move_types.Identifier, move_types.Identifier, error) {
+	parts := strings.Split(target, "::")
+	if len(parts) != 3 {
+		return nil, "", "", fmt.Errorf("target %v is error", target)
+	}
+	packageId, err := sui_types.NewObjectIdFromHex(parts[0])
+	if err != nil {
+		return nil, "", "", err
+	}
+	return packageId, move_types.Identifier(parts[1]), move_types.Identifier(parts[2]), nil
+}
+
+/*
+DevInspectTransactionBlockV2(
+
+		"0xc8::obc_system::vault_info",
+		[]string{
+			"0xc8::usd::USD",
+		},
+		[]*DevInspectArgs{
+			{
+				Type:    "object",
+				Value:   "0xc9",
+				Version: 1,
+			},
+		},
+	)
+*/
+func (c *Client) DevInspectTransactionBlockV2(
+	ctx context.Context,
+	senderAddress suiAddress,
+	target string,
+	typeArgs []string,
+	args []*DevInspectArgs,
+) (*types.DevInspectResults, error) {
+	packageId, module, function, err := c.GetFunctions(target)
+	if err != nil {
+		return nil, err
+	}
+
+	ptb := sui_types.NewProgrammableTransactionBuilder()
+
+	// make TypeTags
+	typeTags := []move_types.TypeTag{}
+	for _, arg := range typeArgs {
+		typeAddr, typeModule, typeFunction, err := c.GetFunctions(arg)
+		if err != nil {
+			return nil, fmt.Errorf("type tag %v is error", arg)
+		}
+		typeTags = append(typeTags, move_types.TypeTag{
+			Struct: &move_types.StructTag{
+				Address: *typeAddr,
+				Module:  typeModule,
+				Name:    typeFunction,
+			},
+		})
+	}
+
+	// make CallArgs
+	arguments := []sui_types.CallArg{}
+	for _, arg := range args {
+		var a sui_types.CallArg
+		if arg.Type == "object" {
+			a, _ = ptb.SharedObjCallArg(arg.Value.(string), arg.Version)
+		} else if arg.Type == "pure" {
+			a, _ = ptb.PureCallArg(arg.Value)
+		} else {
+			continue
+		}
+		arguments = append(arguments, a)
+	}
+
+	ptb.MoveCall(*packageId, module, function, typeTags, arguments)
+	pt := ptb.Finish()
+
+	// Get tx bytes
+	tx := sui_types.NewProgrammable(senderAddress, nil, pt, 0, 0)
+	jsonBytes, err := bcs.Marshal(tx)
+	if err != nil {
+		return nil, err
+	}
+	txBytes := jsonBytes[1 : len(jsonBytes)-82]
+
+	// Request
+	return c.DevInspectTransactionBlock(ctx, senderAddress, txBytes, nil, nil)
 }
