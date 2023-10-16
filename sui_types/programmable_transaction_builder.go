@@ -102,6 +102,32 @@ func (p *ProgrammableTransactionBuilder) Pure(value any) (Argument, error) {
 	return p.pureBytes(pureData, false), nil
 }
 
+func (p *ProgrammableTransactionBuilder) PureCallArg(value any) (CallArg, error) {
+	pureData, err := bcs.Marshal(value)
+	if err != nil {
+		return CallArg{}, err
+	}
+	return CallArg{
+		Pure: &pureData,
+	}, nil
+}
+
+func (p *ProgrammableTransactionBuilder) SharedObjCallArg(address string, version uint64) (CallArg, error) {
+	objectId, err := NewObjectIdFromHex(address)
+	if err != nil {
+		return CallArg{}, err
+	}
+	return CallArg{
+		Object: &ObjectArg{
+			SharedObject: &SharedObject{
+				Id:                   *objectId,
+				InitialSharedVersion: SequenceNumber(version),
+				Mutable:              false,
+			},
+		},
+	}, nil
+}
+
 func (p *ProgrammableTransactionBuilder) Obj(objArg ObjectArg) (Argument, error) {
 	id := objArg.id()
 	var oj ObjectArg
@@ -122,11 +148,7 @@ func (p *ProgrammableTransactionBuilder) Obj(objArg ObjectArg) (Argument, error)
 				return Argument{}, errors.New("invariant violation! object has id does not match call arg")
 			}
 			oj = ObjectArg{
-				SharedObject: &struct {
-					Id                   ObjectID
-					InitialSharedVersion SequenceNumber
-					Mutable              bool
-				}{
+				SharedObject: &SharedObject{
 					Id:                   id,
 					InitialSharedVersion: objArg.SharedObject.InitialSharedVersion,
 					Mutable:              oldObjArg.SharedObject.Mutable || objArg.SharedObject.Mutable,

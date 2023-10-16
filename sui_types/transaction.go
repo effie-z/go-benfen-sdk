@@ -8,11 +8,23 @@ var (
 	}
 
 	SuiSystemMutObj = ObjectArg{
-		SharedObject: &struct {
-			Id                   ObjectID
-			InitialSharedVersion SequenceNumber
-			Mutable              bool
-		}{Id: *SuiSystemStateObjectId, InitialSharedVersion: SuiSystemStateObjectSharedVersion, Mutable: true},
+		SharedObject: &SharedObject{
+			Id:                   *SuiSystemStateObjectId,
+			InitialSharedVersion: SuiSystemStateObjectSharedVersion,
+			Mutable:              true,
+		},
+	}
+
+	BenfenSystemMut = CallArg{
+		Object: &BenfenSystemMutObj,
+	}
+
+	BenfenSystemMutObj = ObjectArg{
+		SharedObject: &SharedObject{
+			Id:                   *BenfenSystemStateObjectId,
+			InitialSharedVersion: BenfenSystemStateObjectSharedVersion,
+			Mutable:              true,
+		},
 	}
 )
 

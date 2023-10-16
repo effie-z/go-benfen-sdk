@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/btcsuite/btcutil v1.0.2
-	github.com/fardream/go-bcs v0.2.1
+	github.com/fardream/go-bcs v0.4.0
 	github.com/mitchellh/hashstructure/v2 v2.0.2
 	github.com/shopspring/decimal v1.3.1
 	github.com/stretchr/testify v1.8.0
