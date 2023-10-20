@@ -32,6 +32,7 @@ const (
 	devInspectTransactionBlock        SuiMethod    = "devInspectTransactionBlock"
 	dryRunTransactionBlock            SuiMethod    = "dryRunTransactionBlock"
 	executeTransactionBlock           SuiMethod    = "executeTransactionBlock"
+	getChainIdentifier                SuiMethod    = "getChainIdentifier"
 	getCheckpoint                     SuiMethod    = "getCheckpoint"
 	getCheckpoints                    SuiMethod    = "getCheckpoints"
 	getEvents                         SuiMethod    = "getEvents"

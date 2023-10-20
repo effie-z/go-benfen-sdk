@@ -145,7 +145,7 @@ func TestClient_BatchGetObjectsOwnedByAddress(t *testing.T) {
 		ShowType:    true,
 		ShowContent: true,
 	}
-	coinType := fmt.Sprintf("0x2::coin::Coin<%v>", types.SuiCoinType)
+	coinType := fmt.Sprintf("0x2::coin::Coin<%v>", types.BFCoinType)
 	filterObject, err := cli.BatchGetObjectsOwnedByAddress(context.TODO(), *Address, options, coinType)
 	require.NoError(t, err)
 	t.Log(filterObject)
@@ -153,7 +153,7 @@ func TestClient_BatchGetObjectsOwnedByAddress(t *testing.T) {
 
 func TestClient_GetCoinMetadata(t *testing.T) {
 	chain := ChainClient(t)
-	metadata, err := chain.GetCoinMetadata(context.TODO(), types.SuiCoinType)
+	metadata, err := chain.GetCoinMetadata(context.TODO(), types.BFCoinType)
 	require.Nil(t, err)
 	t.Logf("%#v", metadata)
 }
@@ -184,7 +184,7 @@ func TestClient_GetBalance(t *testing.T) {
 
 func TestClient_GetCoins(t *testing.T) {
 	chain := ChainClient(t)
-	defaultCoinType := types.SuiCoinType
+	defaultCoinType := types.BFCoinType
 	coins, err := chain.GetCoins(context.TODO(), *Address, &defaultCoinType, nil, 1)
 	require.NoError(t, err)
 	t.Logf("%#v", coins)
@@ -396,7 +396,7 @@ func TestClient_GetTotalSupply(t *testing.T) {
 			chain: chain,
 			args: args{
 				context.TODO(),
-				types.SuiCoinType,
+				types.BFCoinType,
 			},
 			wantErr: false,
 		},
@@ -774,6 +774,18 @@ func TestClient_DevInspectTransactionBlockV2(t *testing.T) {
 	}
 	bcs.Unmarshal(resBytes, &vaultInfo)
 	PrintJson(vaultInfo)
+}
+
+func TestClient_GetChainIdentifier(t *testing.T) {
+	chain, err := Dial("http://127.0.0.1:9000")
+	require.NoError(t, err)
+
+	resp, err := chain.GetChainIdentifier(
+		context.Background(),
+	)
+	require.NoError(t, err)
+
+	PrintJson(resp)
 }
 
 func PrintJson(data any) {

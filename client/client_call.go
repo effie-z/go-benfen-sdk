@@ -45,7 +45,7 @@ func (c *Client) GetAllBalances(ctx context.Context, owner suiAddress) ([]types.
 
 // GetSuiCoinsOwnedByAddress This function will retrieve a maximum of 200 coins.
 func (c *Client) GetSuiCoinsOwnedByAddress(ctx context.Context, address suiAddress) (types.Coins, error) {
-	coinType := types.SuiCoinType
+	coinType := types.BFCoinType
 	page, err := c.GetCoins(ctx, address, &coinType, nil, 200)
 	if err != nil {
 		return nil, err
@@ -410,6 +410,11 @@ func (c *Client) GetDynamicFieldObject(
 ) (*types.SuiObjectResponse, error) {
 	var resp types.SuiObjectResponse
 	return &resp, c.CallContext(ctx, &resp, getDynamicFieldObject, parentObjectId, name)
+}
+
+func (c *Client) GetChainIdentifier(ctx context.Context) (*string, error) {
+	var resp string
+	return &resp, c.CallContext(ctx, &resp, getChainIdentifier)
 }
 
 /*
