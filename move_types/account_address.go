@@ -14,7 +14,7 @@ type AccountAddress [SuiAddressLen]uint8
 func NewAccountAddressHex(str string) (*AccountAddress, error) {
 	if strings.HasPrefix(str, "0x") || strings.HasPrefix(str, "0X") {
 		str = str[2:]
-	} else if strings.HasPrefix(str, "obc") || strings.HasPrefix(str, "OBC") {
+	} else if strings.HasPrefix(str, "bfc") || strings.HasPrefix(str, "BFC") {
 		str = str[3 : len(str)-4]
 	}
 	if len(str)%2 != 0 {

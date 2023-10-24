@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	BFCoinType    = "0x2::obc::OBC"
+	BFCoinType    = "0x2::bfc::BFC"
 	DevNetRpcUrl  = "https://fullnode.devnet.sui.io"
 	TestnetRpcUrl = "https://fullnode.testnet.sui.io"
 	MainnetRpcUrl = "https://fullnode.mainnet.sui.io"

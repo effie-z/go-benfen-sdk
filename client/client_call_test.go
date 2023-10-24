@@ -720,7 +720,7 @@ func TestClient_GetDynamicFieldObject(t *testing.T) {
 }
 
 func TestClient_DevInspectTransactionBlockV2(t *testing.T) {
-	chain, err := Dial("http://127.0.0.1:9000")
+	chain, err := Dial("http://yobcrpc.openblock.vip")
 	require.NoError(t, err)
 
 	fromAddr, err := sui_types.NewAddressFromHex("0x0")
@@ -729,9 +729,9 @@ func TestClient_DevInspectTransactionBlockV2(t *testing.T) {
 	resp, err := chain.DevInspectTransactionBlockV2(
 		context.Background(),
 		*fromAddr,
-		"0xc8::obc_system::vault_info",
+		"0xc8::bfc_system::vault_info",
 		[]string{
-			"0xc8::usd::USD",
+			"0xc8::busd::BUSD",
 		},
 		[]*DevInspectArgs{
 			{
@@ -755,29 +755,31 @@ func TestClient_DevInspectTransactionBlockV2(t *testing.T) {
 	}
 
 	var vaultInfo struct {
-		VaultId          sui_types.SuiAddress `json:"vault_id"`
-		PositionNumber   uint32               `json:"position_number"`
-		State            uint8                `json:"state"`
-		StateCounter     uint32               `json:"state_counter"`
-		MaxCounterTimes  uint32               `json:"max_counter_times"`
-		LastSqrtPrice    move_types.U128      `json:"last_sqrt_price"`
-		CoinABalance     uint64               `json:"coin_a_balance"`
-		CoinBBalance     uint64               `json:"coin_b_balance"`
-		TickSpacing      uint32               `json:"tick_spacing"`
-		SpacingTimes     uint32               `json:"spacing_times"`
-		Liquidity        move_types.U128      `json:"liquidity"`
-		CurrentSqrtPrice move_types.U128      `json:"current_sqrt_price"`
-		CurrentTickIndex uint32               `json:"current_tick_index"`
-		IsPause          bool                 `json:"is_pause"`
-		Index            uint64               `json:"index"`
-		BasePoint        uint64               `json:"base_point"`
+		VaultId          sui_types.SuiAddress  `json:"vault_id"`
+		PositionNumber   uint32                `json:"position_number"`
+		State            uint8                 `json:"state"`
+		StateCounter     uint32                `json:"state_counter"`
+		MaxCounterTimes  uint32                `json:"max_counter_times"`
+		LastSqrtPrice    move_types.U128       `json:"last_sqrt_price"`
+		CoinABalance     uint64                `json:"coin_a_balance"`
+		CoinBBalance     uint64                `json:"coin_b_balance"`
+		CoinAType        move_types.Identifier `json:"coin_a_type"`
+		CoinBType        move_types.Identifier `json:"coin_b_type"`
+		TickSpacing      uint32                `json:"tick_spacing"`
+		SpacingTimes     uint32                `json:"spacing_times"`
+		Liquidity        move_types.U128       `json:"liquidity"`
+		CurrentSqrtPrice move_types.U128       `json:"current_sqrt_price"`
+		CurrentTickIndex uint32                `json:"current_tick_index"`
+		IsPause          bool                  `json:"is_pause"`
+		Index            uint64                `json:"index"`
+		BasePoint        uint64                `json:"base_point"`
 	}
 	bcs.Unmarshal(resBytes, &vaultInfo)
 	PrintJson(vaultInfo)
 }
 
 func TestClient_GetChainIdentifier(t *testing.T) {
-	chain, err := Dial("http://127.0.0.1:9000")
+	chain, err := Dial("https://obcrpc.openblock.vip")
 	require.NoError(t, err)
 
 	resp, err := chain.GetChainIdentifier(

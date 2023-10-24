@@ -418,8 +418,8 @@ func (c *Client) GetChainIdentifier(ctx context.Context) (*string, error) {
 }
 
 /*
-input target: 0xc8::obc_system::vault_info
-return: 0xc8, obc_system, vault_info
+input target: 0xc8::bfc_system::vault_info
+return: 0xc8, bfc_system, vault_info
 */
 func (c *Client) GetFunctions(target string) (*suiAddress, move_types.Identifier, move_types.Identifier, error) {
 	parts := strings.Split(target, "::")
@@ -436,9 +436,9 @@ func (c *Client) GetFunctions(target string) (*suiAddress, move_types.Identifier
 /*
 DevInspectTransactionBlockV2(
 
-		"0xc8::obc_system::vault_info",
+		"0xc8::bfc_system::vault_info",
 		[]string{
-			"0xc8::usd::USD",
+			"0xc8::busd::BUSD",
 		},
 		[]*DevInspectArgs{
 			{
