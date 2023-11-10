@@ -1,8 +1,8 @@
 package client
 
 const (
-	SuiXPrefix   = "suix_"
-	SuiPrefix    = "sui_"
+	SuiXPrefix   = "bfcx_"
+	SuiPrefix    = "bfc_"
 	UnsafePrefix = "unsafe_"
 )
 
