@@ -109,7 +109,7 @@ func (c *Client) GetOwnedObjects(
 	ctx context.Context,
 	address suiAddress,
 	query *types.SuiObjectResponseQuery,
-	cursor *types.CheckpointedObjectId,
+	cursor *sui_types.ObjectID,
 	limit *uint,
 ) (*types.ObjectsPage, error) {
 	var resp types.ObjectsPage
