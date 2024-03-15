@@ -458,3 +458,92 @@ func (p *ProgrammableTransactionBuilder) PayMulInternal(
 	}
 	return nil
 }
+
+func (p *ProgrammableTransactionBuilder) MergeCoins(
+	coins []*ObjectRef,
+) (*Argument, error) {
+	if len(coins) == 0 {
+		return nil, errors.New("coins is empty")
+	}
+	coinArg, err := p.Obj(
+		ObjectArg{
+			ImmOrOwnedObject: coins[0],
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	coins = coins[1:]
+	var mergeArgs []Argument
+	for _, v := range coins {
+		mergeCoin, err := p.Obj(
+			ObjectArg{
+				ImmOrOwnedObject: v,
+			},
+		)
+		if err != nil {
+			return nil, err
+		}
+		mergeArgs = append(mergeArgs, mergeCoin)
+	}
+
+	if len(mergeArgs) != 0 {
+		p.Command(
+			Command{
+				MergeCoins: &struct {
+					Argument  Argument
+					Arguments []Argument
+				}{Argument: coinArg, Arguments: mergeArgs},
+			},
+		)
+	}
+	return &coinArg, nil
+}
+
+func (p *ProgrammableTransactionBuilder) SplitCoin(
+	coin Argument,
+	amount uint64,
+) (*Argument, error) {
+	amt, err := p.Pure(amount)
+	if err != nil {
+		return nil, err
+	}
+	arg := p.Command(
+		Command{
+			SplitCoins: &struct {
+				Argument  Argument
+				Arguments []Argument
+			}{Argument: coin, Arguments: []Argument{amt}},
+		},
+	)
+	return &arg, nil
+}
+
+func (p *ProgrammableTransactionBuilder) ZeroCoin(
+	coinAddress move_types.AccountAddress,
+	coinModule move_types.Identifier,
+	coinName move_types.Identifier,
+) (*Argument, error) {
+	packageId, _ := NewAddressFromHex("0x2")
+	arg := p.Command(
+		Command{
+			MoveCall: &ProgrammableMoveCall{
+				Package:  *packageId,
+				Module:   move_types.Identifier("coin"),
+				Function: move_types.Identifier("zero"),
+				TypeArguments: []move_types.TypeTag{
+					{
+						Struct: &move_types.StructTag{
+							Address: coinAddress,
+							Module:  coinModule,
+							Name:    coinName,
+						},
+					},
+				},
+				Arguments: []Argument{},
+			},
+		},
+	)
+	return &arg, nil
+}
