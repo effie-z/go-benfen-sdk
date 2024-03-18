@@ -128,12 +128,16 @@ func (p *ProgrammableTransactionBuilder) SharedObjCallArg(address string, versio
 	}, nil
 }
 
-func (p *ProgrammableTransactionBuilder) SharedObj(objectId move_types.AccountAddress, version uint64) (Argument, error) {
+func (p *ProgrammableTransactionBuilder) SharedObj(
+	objectId move_types.AccountAddress,
+	version uint64,
+	mutable bool,
+) (Argument, error) {
 	return p.Obj(ObjectArg{
 		SharedObject: &SharedObject{
 			Id:                   objectId,
 			InitialSharedVersion: SequenceNumber(version),
-			Mutable:              false,
+			Mutable:              mutable,
 		},
 	})
 }
