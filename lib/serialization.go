@@ -95,10 +95,6 @@ func (h Base64Data) MarshalJSON() ([]byte, error) {
 	return json.Marshal(h.String())
 }
 
-func (h Base64Data) MarshalBCS() ([]byte, error) {
-	return h, nil
-}
-
 func (h *Base64Data) UnmarshalJSON(data []byte) error {
 	str := ""
 	err := json.Unmarshal(data, &str)
