@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"strings"
 
+    "github.com/fardream/go-bcs/bcs"
 	"github.com/btcsuite/btcutil/base58"
 )
 
@@ -96,7 +97,7 @@ func (h Base64Data) MarshalJSON() ([]byte, error) {
 }
 
 func (h Base64Data) MarshalBCS() ([]byte, error) {
-	return h, nil
+    return bcs.Marshal(h)
 }
 
 func (h *Base64Data) UnmarshalJSON(data []byte) error {
